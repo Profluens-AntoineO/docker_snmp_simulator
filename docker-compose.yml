@@ -1,0 +1,184 @@
+services:
+  printer1:
+    build:
+      context: printer
+      dockerfile: Dockerfile
+    container_name: simulated_printer_lan_1
+    networks:
+      simulation_lan_net:
+#        ipv4_address: 192.168.1.71 # <-- IMPORTANT: Choisissez une IP libre sur votre LAN
+    environment:
+      # Variables pour personnaliser cette instance d'imprimante
+      SYS_DESCR_VAL: "HP Color LaserJet Pro MFP M479fdw (Sim-P1)"
+      SYS_CONTACT_VAL: "Support P1 <support-p1@example.com>"
+      SYS_LOCATION_VAL: "Bureau 101, LAN Docker"
+      HR_DEVICE_DESCR_VAL: "Simulated Printer Alpha - Office A"
+      PRT_GENERAL_NAME_VAL: "Alpha_Printer_SNMP_001"
+    restart: unless-stopped
+
+  printer2:
+    build:
+      context: printer
+      dockerfile: Dockerfile
+    container_name: simulated_printer_lan_2
+    networks:
+      simulation_lan_net:
+#        ipv4_address: 192.168.1.72 # <-- IMPORTANT: Choisissez une AUTRE IP libre sur votre LAN
+    environment:
+      # Variables pour personnaliser cette instance d'imprimante
+      SYS_DESCR_VAL: "Brother MFC-L2750DW (Sim-P2)"
+      SYS_CONTACT_VAL: "Support P2 <support-p2@example.com>"
+      SYS_LOCATION_VAL: "Service Comptabilité, LAN Docker"
+      HR_DEVICE_DESCR_VAL: "Simulated Printer Beta - Accounting"
+      PRT_GENERAL_NAME_VAL: "Beta_Printer_SNMP_002"
+    restart: unless-stopped
+
+  network_switch_1:
+    build:
+      context: network_switch
+      dockerfile: Dockerfile
+    container_name: simulated_switch_core_1
+    networks:
+      simulation_lan_net:
+#        ipv4_address: 192.168.1.203 # Adaptez cette IP
+    environment:
+      DEVICE_TYPE: switch
+      SYS_NAME_VAL: "CoreSwitch-DatacenterA-Sim"
+      SYS_LOCATION_VAL: "Datacenter A, Baie Principale"
+      SYS_CONTACT_VAL: "noc@example.com"
+      SYS_DESCR_VAL: "Cisco Catalyst 9300 Switch - Simulated Core"
+      SYS_OBJECT_ID_VAL: .1.3.6.1.4.1.9.1.2467 # Exemple pour C9300
+      IF_NUMBER_VAL: 4 # Exemple
+      IF1_DESCR_VAL: "TenGigabitEthernet1/0/1 - Uplink Router"
+      IF1_MAC_VAL: "00:AA:BB:CC:DD:01"
+      # ... autres variables pour le switch ...
+    restart: unless-stopped
+
+  router_1:
+    build:
+      context: router
+      dockerfile: Dockerfile
+    container_name: simulated_router_edge_1
+    networks:
+      simulation_lan_net:
+#        ipv4_address: 192.168.1.204 # Adaptez cette IP
+    environment:
+      DEVICE_TYPE: router
+      SYS_NAME_VAL: "EdgeRouter-ParisPOP-Sim"
+      SYS_LOCATION_VAL: "POP Paris, Rue de Rivoli"
+      SYS_CONTACT_VAL: "noc@example.com"
+      SYS_DESCR_VAL: "Juniper MX204 Universal Routing Platform - Simulated Edge"
+      SYS_OBJECT_ID_VAL: .1.3.6.1.4.1.2636.1.1.1.2.67 # Exemple Juniper MX
+      # ... autres variables pour le routeur ...
+    restart: unless-stopped
+
+  linux_server_1:
+    build:
+      context: linux_server
+      dockerfile: Dockerfile
+    container_name: simulated_linux_webserver_1
+    networks:
+      simulation_lan_net:
+        ipv4_address: 192.168.1.205 # Adaptez cette IP
+    environment:
+      DEVICE_TYPE: linux_server
+      SYS_NAME_VAL: "WebServerProd01-Sim"
+      SYS_LOCATION_VAL: "VM Cluster A, Host 3"
+      SYS_CONTACT_VAL: "sysadmin-team@example.com"
+      SYS_DESCR_VAL: "Ubuntu Linux 22.04 LTS - Apache Web Server - Simulated"
+      SYS_OBJECT_ID_VAL: .1.3.6.1.4.1.8072.3.2.10 # Net-SNMP Linux
+      # ... autres variables pour le serveur linux ...
+    restart: unless-stopped
+
+  firewall_1:
+    build:
+      context: firewall
+      dockerfile: Dockerfile
+    container_name: simulated_firewall_perimeter_1
+    networks:
+      simulation_lan_net:
+#        ipv4_address: 192.168.1.206 # Adaptez cette IP
+    environment:
+      DEVICE_TYPE: firewall
+      SYS_NAME_VAL: "PerimeterFW-HQ-Sim"
+      SYS_LOCATION_VAL: "Siège Social, Salle Technique"
+      SYS_CONTACT_VAL: "security-ops@example.com"
+      SYS_DESCR_VAL: "FortiGate 500E - Firmware 7.0.5 - Simulated"
+      SYS_OBJECT_ID_VAL: .1.3.6.1.4.1.12356.101.1.500 # Exemple FortiGate
+      # ... autres variables pour le firewall ...
+    restart: unless-stopped
+
+  wap_1:
+    build:
+      context: wap
+      dockerfile: Dockerfile
+    container_name: simulated_wap_office_1
+    networks:
+      simulation_lan_net:
+#        ipv4_address: 192.168.1.207 # Adaptez cette IP
+    environment:
+      DEVICE_TYPE: wap
+      SYS_NAME_VAL: "WAP-OfficeFloor1-Sim"
+      SYS_LOCATION_VAL: "1er Étage, Zone Ouest"
+      SYS_CONTACT_VAL: "wifi-admins@example.com"
+      SYS_DESCR_VAL: "Cisco Aironet AP2802I - Simulated"
+      SYS_OBJECT_ID_VAL: .1.3.6.1.4.1.9.1.2339 # Exemple Cisco AP
+      # ... autres variables pour le WAP ...
+    restart: unless-stopped
+
+  ups_1:
+    build:
+      context: ups
+      dockerfile: Dockerfile
+    container_name: simulated_ups_serverroom_1
+    networks:
+      simulation_lan_net:
+#        ipv4_address: 192.168.1.208 # Adaptez cette IP
+    environment:
+      DEVICE_TYPE: ups
+      SYS_NAME_VAL: "UPS-ServerRackA-Sim"
+      SYS_LOCATION_VAL: "Salle Serveur, Baie A"
+      SYS_CONTACT_VAL: "datacenter-ops@example.com"
+      SYS_DESCR_VAL: "APC Smart-UPS 5000VA - Simulated"
+      SYS_OBJECT_ID_VAL: .1.3.6.1.4.1.318.1.3.33 # Exemple APC Smart-UPS
+      UPS_MODEL_VAL: "Smart-UPS 5000VA RM SIM"
+      UPS_BATT_CHARGE_VAL: 98
+      UPS_MINUTES_REM_VAL: 45
+      UPS_LOAD_VAL: 25
+      # ... autres variables pour l'UPS ...
+    restart: unless-stopped
+
+  nas_1:
+    build:
+      context: nas
+      dockerfile: Dockerfile
+    container_name: simulated_nas_storage_1
+    networks:
+      simulation_lan_net:
+#        ipv4_address: 192.168.1.209 # Adaptez cette IP
+    environment:
+      DEVICE_TYPE: nas
+      SYS_NAME_VAL: "NAS-Multimedia-Sim"
+      SYS_LOCATION_VAL: "Bureau Domicile, Stockage Central"
+      SYS_CONTACT_VAL: "tech-support-nas@example.com"
+      SYS_DESCR_VAL: "Synology DS1621+ - DSM 7.2 - Simulated"
+      SYS_OBJECT_ID_VAL: .1.3.6.1.4.1.6574.1 # Synology System MIB
+      NAS_MODEL_VAL: "DS1621+ SIM"
+      NAS_TEMP_VAL: 35
+      VOL1_DESCR_VAL: "/volume1 - Media Storage - Sim"
+      VOL1_SIZE_BLOCKS_VAL: 3906250000 # ~16TB si blocs de 4KB
+      VOL1_USED_BLOCKS_VAL: 2000000000 # ~8TB utilisé
+      # ... autres variables pour le NAS ...
+    restart: unless-stopped
+    
+networks:
+  simulation_lan_net:
+    driver: macvlan
+    driver_opts:
+      parent: enp3s0 # <-- 📡 IMPORTANT: Remplacez par votre interface réseau hôte connectée au LAN (ex: eno1, enp3s0)
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24   # <-- 🌐 IMPORTANT: Adaptez à votre sous-réseau LAN
+          gateway: 192.168.1.1    # <-- 🚪 IMPORTANT: Adaptez à votre passerelle LAN
+          ip_range: 192.168.1.64/28 # Optionnel: si vous voulez que Docker choisisse dans une plage.
+          # Les adresses statiques ci-dessus sont plus directes.
