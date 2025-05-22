@@ -43,7 +43,7 @@ Actuellement, ce projet fournit des templates pour simuler les types d'appareils
 
 1.  **Configuration du réseau `macvlan` :**
     Ouvrez le fichier `docker-compose.yml`. Vous **devez** adapter la section `networks: printer_lan_net:` pour qu'elle corresponde à votre propre configuration réseau :
-    * `parent: eth0` : Remplacez `eth0` par le nom de l'interface réseau physique de votre machine hôte connectée à votre LAN (ex: `eno1`, `enp3s0`). Utilisez `ip addr show` sur votre hôte pour trouver le nom correct.
+    * `parent: enp3s0` : Remplacez `enp3s0` par le nom de l'interface réseau physique de votre machine hôte connectée à votre LAN (ex: `eno1`, `eth0`). Utilisez `ip addr show` sur votre hôte pour trouver le nom correct.
     * `subnet: 192.168.1.0/24` : Adaptez à votre sous-réseau LAN.
     * `gateway: 192.168.1.1` : Adaptez à votre passerelle LAN.
 
@@ -130,7 +130,7 @@ Currently, this project provides templates to simulate the following device type
 
 1.  **`macvlan` Network Configuration:**
     Open the `docker-compose.yml` file. You **must** adapt the `networks: printer_lan_net:` section to match your own network configuration:
-    * `parent: eth0`: Replace `eth0` with the name of the physical network interface of your host machine connected to your LAN (e.g., `eno1`, `enp3s0`). Use `ip addr show` on your host to find the correct name.
+    * `parent: enp3s0`: Replace `enp3s0` with the name of the physical network interface of your host machine connected to your LAN (e.g., `eno1`, `eth0`). Use `ip addr show` on your host to find the correct name.
     * `subnet: 192.168.1.0/24`: Adapt to your LAN subnet.
     * `gateway: 192.168.1.1`: Adapt to your LAN gateway.
 
